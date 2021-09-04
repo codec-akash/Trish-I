@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:trishi/screens/bmi_page.dart';
 import 'package:trishi/screens/home_screen.dart';
 import 'package:trishi/screens/splash_screen.dart';
+import 'package:trishi/screens/card_sucess_screen.dart';
 
 void main() {
   runApp(MyApp());
