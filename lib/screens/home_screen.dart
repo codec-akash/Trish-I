@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/body_part_card.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -12,21 +13,25 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            //TODO: Call Body part card here
-            Row(
-              children: [],
-            ),
-            Row(
-              children: [],
-            ),
-            Row(
-              children: [],
-            )
-          ],
-        ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Icon(Icons.add),
+      ),
+      body: Column(
+        children: [
+          //TODO: Call Body part card here
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [BodypartCard(), BodypartCard()],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [BodypartCard(), BodypartCard()],
+          ),
+          // Row(
+          //   children: [BodypartCard(), BodypartCard()],
+          // )
+        ],
       ),
     );
   }
