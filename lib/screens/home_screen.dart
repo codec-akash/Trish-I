@@ -13,23 +13,25 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            //TODO: Call Body part card here
-            Row(
-              children: [
-                BodypartCard()
-              ],
-            ),
-            Row(
-              children: [],
-            ),
-            Row(
-              children: [],
-            )
-          ],
-        ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Icon(Icons.add),
+      ),
+      body: Column(
+        children: [
+          //TODO: Call Body part card here
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [BodypartCard(), BodypartCard()],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [BodypartCard(), BodypartCard()],
+          ),
+          // Row(
+          //   children: [BodypartCard(), BodypartCard()],
+          // )
+        ],
       ),
     );
   }
