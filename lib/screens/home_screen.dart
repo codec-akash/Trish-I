@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/body_part_card.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -17,7 +18,9 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             //TODO: Call Body part card here
             Row(
-              children: [],
+              children: [
+                BodypartCard()
+              ],
             ),
             Row(
               children: [],
