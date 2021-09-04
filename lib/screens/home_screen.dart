@@ -19,18 +19,20 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Column(
         children: [
-          //TODO: Call Body part card here
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [BodypartCard(), BodypartCard()],
+            children: [
+              Expanded(child: BodypartCard()),
+              Expanded(child: BodypartCard()),
+            ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [BodypartCard(), BodypartCard()],
+            children: [
+              Expanded(child: BodypartCard()),
+              Expanded(child: BodypartCard()),
+            ],
           ),
-          // Row(
-          //   children: [BodypartCard(), BodypartCard()],
-          // )
         ],
       ),
     );

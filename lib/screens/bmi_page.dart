@@ -44,7 +44,7 @@ class _BmiEntryState extends State<BmiEntry> {
                   labelText: "Enter Height(meter)",
                   border: OutlineInputBorder(
                     borderSide: Global().textFieldBorderSide,
-                    borderRadius: Global().textFieldBorderRadius,
+                    borderRadius: Global().borderRadius15,
                   ),
                 ),
                 keyboardType: TextInputType.number,
@@ -68,7 +68,7 @@ class _BmiEntryState extends State<BmiEntry> {
                   labelText: "Enter Weight(Kg)",
                   border: OutlineInputBorder(
                     borderSide: Global().textFieldBorderSide,
-                    borderRadius: Global().textFieldBorderRadius,
+                    borderRadius: Global().borderRadius15,
                   ),
                 ),
                 keyboardType: TextInputType.number,
@@ -92,7 +92,7 @@ class _BmiEntryState extends State<BmiEntry> {
                   labelText: "Enter Age",
                   border: OutlineInputBorder(
                     borderSide: Global().textFieldBorderSide,
-                    borderRadius: Global().textFieldBorderRadius,
+                    borderRadius: Global().borderRadius15,
                   ),
                 ),
                 inputFormatters: <TextInputFormatter>[
@@ -120,7 +120,7 @@ class _BmiEntryState extends State<BmiEntry> {
                   margin: EdgeInsets.symmetric(horizontal: 15.0),
                   decoration: BoxDecoration(
                     color: Theme.of(context).primaryColor,
-                    borderRadius: Global().buttonBorderRadius,
+                    borderRadius: Global().borderRadius15,
                   ),
                   alignment: Alignment.center,
                   child: Text(

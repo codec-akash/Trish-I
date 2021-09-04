@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Global {
-  BorderRadius textFieldBorderRadius = BorderRadius.circular(15.0);
-  BorderRadius buttonBorderRadius = BorderRadius.circular(15.0);
+  BorderRadius borderRadius15 = BorderRadius.circular(15.0);
 
   BorderSide textFieldBorderSide = BorderSide(
     color: Colors.white,

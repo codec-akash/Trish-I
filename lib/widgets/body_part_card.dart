@@ -1,48 +1,41 @@
 import 'package:flutter/material.dart';
-
-Widget gridCard(massageName) {
-  return Card(
-    margin: EdgeInsets.all(5.0),
-    child: Padding(
-      padding: const EdgeInsets.all(12.0),
-      child: Container(
-        height: 150,
-        width: 140,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Container(
-                height: 110,
-                child: Image.asset(
-                  'assets/images/logo.png',
-                  fit: BoxFit.contain,
-                  height: 110,
-                )),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              '$massageName',
-              style: TextStyle(
-                fontSize: 18.0,
-              ),
-            ),
-          ],
-        ),
-      ),
-    ),
-  );
-}
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:trishi/global/global.dart';
 
 class BodypartCard extends StatelessWidget {
   const BodypartCard({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    //TODO: Design body part card
     return Container(
-        margin: EdgeInsets.all(8.0),
-        // child: newGrid(),
-        child: gridCard("Body"));
+      padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
+      margin: EdgeInsets.all(8.0),
+      decoration: BoxDecoration(
+        color: Theme.of(context).primaryColor,
+        borderRadius: Global().borderRadius15,
+      ),
+      child: Container(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              child: SvgPicture.asset(
+                "assets/svgs/back.svg",
+                height: 100,
+                color: Colors.white,
+              ),
+            ),
+            SizedBox(height: 10),
+            Text(
+              "Text",
+              style: TextStyle(
+                fontSize: 18.0,
+                color: Colors.white,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
