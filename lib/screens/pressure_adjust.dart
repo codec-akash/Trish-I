@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:trishi/global/global.dart';
+import 'package:trishi/widgets/slider_widget.dart';
 
 class PressureAdjust extends StatefulWidget {
   final String imagePath;
@@ -15,8 +16,6 @@ class PressureAdjust extends StatefulWidget {
 }
 
 class _PressureAdjustState extends State<PressureAdjust> {
-  int _value = 6;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,18 +30,7 @@ class _PressureAdjustState extends State<PressureAdjust> {
               widget.imagePath,
               height: 110,
             ),
-            Flexible(
-                flex: 1,
-                child: Slider(
-                  value: _value.toDouble(),
-                  max: 20,
-                  min: 0,
-                  onChanged: (double value) {
-                    setState(() {
-                      _value = value.round();
-                    });
-                  },
-                )),
+            SliderWidget(),
             Expanded(
                 flex: 3,
                 child: Column(

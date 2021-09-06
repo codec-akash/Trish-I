@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:trishi/screens/bmi_page.dart';
-import 'package:trishi/screens/home_screen.dart';
 import 'package:trishi/screens/splash_screen.dart';
-import 'package:trishi/screens/pressure_adjust.dart';
 
 void main() {
   runApp(MyApp());
@@ -15,7 +12,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Trish - I',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: Color(0xFF017e6F),
+        accentColor: Color(0xFFd9c562),
       ),
       home: SplashScreen(),
     );

@@ -37,7 +37,7 @@ class BodypartCard extends StatelessWidget {
                 child: SvgPicture.asset(
                   imagePath,
                   height: 100,
-                  color: Colors.white,
+                  color: Theme.of(context).accentColor,
                 ),
               ),
               SizedBox(height: 10),
