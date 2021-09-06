@@ -17,6 +17,27 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: Text("Trish - I"),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: InkWell(
+        child: Container(
+          height: 50,
+          // padding: EdgeInsets.symmetric(vertical: 20.0),
+          margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
+          decoration: BoxDecoration(
+            color: Theme.of(context).primaryColor,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          alignment: Alignment.center,
+          child: Text(
+            "Calculate BMI",
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+        onTap: () {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => BmiEntry()));
+        },
+      ),
       body: Column(
         children: [
           Row(
@@ -48,27 +69,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 bodyPart: 'Shoulder',
               )),
             ],
-          ),
-          Spacer(),
-          InkWell(
-            child: Container(
-              width: double.infinity,
-              padding: EdgeInsets.symmetric(vertical: 20.0),
-              margin: EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              alignment: Alignment.center,
-              child: Text(
-                "Calculate BMI",
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-            onTap: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => BmiEntry()));
-            },
           ),
         ],
       ),
