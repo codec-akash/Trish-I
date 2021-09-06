@@ -36,13 +36,14 @@ class BodypartCard extends StatelessWidget {
               Container(
                 child: SvgPicture.asset(
                   imagePath,
+                  width: 100,
                   height: 100,
                   color: Theme.of(context).accentColor,
                 ),
               ),
               SizedBox(height: 10),
               Text(
-                bodyPart,
+                "$bodyPart Massage",
                 style: TextStyle(
                   fontSize: 18.0,
                   color: Colors.white,

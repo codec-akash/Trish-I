@@ -28,7 +28,9 @@ class _PressureAdjustState extends State<PressureAdjust> {
           children: [
             SvgPicture.asset(
               widget.imagePath,
+              width: 110,
               height: 110,
+              color: Theme.of(context).primaryColor,
             ),
             SliderWidget(),
             Expanded(

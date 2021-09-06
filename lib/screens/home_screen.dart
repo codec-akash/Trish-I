@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../widgets/body_part_card.dart';
+import 'package:trishi/global/global.dart';
+import 'bmi_page.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -14,10 +16,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Trish - I"),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: Icon(Icons.add),
       ),
       body: Column(
         children: [
@@ -50,6 +48,27 @@ class _HomeScreenState extends State<HomeScreen> {
                 bodyPart: 'Shoulder',
               )),
             ],
+          ),
+          Spacer(),
+          InkWell(
+            child: Container(
+              width: double.infinity,
+              padding: EdgeInsets.symmetric(vertical: 20.0),
+              margin: EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              alignment: Alignment.center,
+              child: Text(
+                "Calculate BMI",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+            onTap: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => BmiEntry()));
+            },
           ),
         ],
       ),
