@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:trishi/screens/bmi_page.dart';
 import 'package:trishi/screens/home_screen.dart';
 import 'package:trishi/screens/splash_screen.dart';
-import 'package:trishi/screens/card_sucess_screen.dart';
+import 'package:trishi/screens/pressure_adjust.dart';
 
 void main() {
   runApp(MyApp());
@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: HomeScreen(),
+      home: SplashScreen(),
     );
   }
 }
