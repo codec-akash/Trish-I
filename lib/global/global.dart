@@ -10,4 +10,6 @@ class Global {
 
   EdgeInsetsGeometry screenPadding =
       EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0);
+
+  static const String BMIDataKey = "userBMIData";
 }
