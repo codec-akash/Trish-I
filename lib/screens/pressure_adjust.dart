@@ -39,7 +39,7 @@ class _PressureAdjustState extends State<PressureAdjust> {
                   children: [
                     Container(
                       child: Text(
-                        "1. This is Information 1 which can be provided for this specific bofy part",
+                        "1. This is Information 1 which can be provided for this specific body part",
                         style: TextStyle(
                           fontSize: 22,
                           fontStyle: FontStyle.italic,
@@ -49,7 +49,17 @@ class _PressureAdjustState extends State<PressureAdjust> {
                     Container(
                       margin: EdgeInsets.symmetric(vertical: 10),
                       child: Text(
-                        "2. This is Information 1 which can be provided for this specific bofy part",
+                        "2. This is Information 2 which can be provided for this specific body part",
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.symmetric(vertical: 10),
+                      child: Text(
+                        "3. This is Information 3 which can be provided as precautions for this specific body part",
                         style: TextStyle(
                           fontSize: 22,
                           fontStyle: FontStyle.italic,

@@ -50,19 +50,14 @@ class _HomeScreenState extends State<HomeScreen> {
               )),
               Expanded(
                   child: BodypartCard(
-                imagePath: 'assets/svgs/foot.svg',
-                bodyPart: 'Foot',
+                imagePath: 'assets/svgs/knees.svg',
+                bodyPart: 'Knee',
               )),
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Expanded(
-                  child: BodypartCard(
-                imagePath: 'assets/svgs/knees.svg',
-                bodyPart: 'Knee',
-              )),
               Expanded(
                   child: BodypartCard(
                 imagePath: 'assets/svgs/shoulder.svg',
