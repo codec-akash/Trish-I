@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trishi/global/global.dart';
+import 'package:trishi/model/body_model.dart';
 import 'package:trishi/repository/bmi_repo.dart';
 
 import 'home_screen.dart';
@@ -17,7 +18,9 @@ class BmiEntry extends StatefulWidget {
 
 class _BmiEntryState extends State<BmiEntry> {
   final _formKey = GlobalKey<FormState>();
+  late SharedPreferences _preferences;
   Map<String, dynamic> userData = {};
+  late BMiModel _userBmiData;
 
   BmiRepo _bmiRepo = BmiRepo();
 
@@ -55,8 +58,6 @@ class _BmiEntryState extends State<BmiEntry> {
 
       String userJson = json.encode(userData);
 
-      SharedPreferences _preferences = await SharedPreferences.getInstance();
-
       _preferences.setString(Global.BMIDataKey, userJson);
 
       Navigator.of(context).pushReplacement(
@@ -66,16 +67,17 @@ class _BmiEntryState extends State<BmiEntry> {
 
   @override
   void didChangeDependencies() async {
+    _preferences = await SharedPreferences.getInstance();
     if (!isLoaded) {
-      SharedPreferences _preferences = await SharedPreferences.getInstance();
       if (_preferences.containsKey(Global.BMIDataKey)) {
         setState(() {
           String userJson = _preferences.getString(Global.BMIDataKey) ?? '';
           userData = jsonDecode(userJson);
-          age = userData["age"];
-          weight = userData['weight'];
-          height = userData['height'];
-          bmi = userData['bmi'];
+          _userBmiData = BMiModel.fromJson(userData);
+          age = _userBmiData.age;
+          weight = _userBmiData.weight;
+          height = _userBmiData.height;
+          bmi = _userBmiData.bmi;
           isLoaded = true;
         });
       }
