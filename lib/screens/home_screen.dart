@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/body_part_card.dart';
-import 'package:trishi/global/global.dart';
+// import 'package:trishi/global/global.dart';
 import 'bmi_page.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -29,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           alignment: Alignment.center,
           child: Text(
-            "Calculate BMI",
+            "Update BMI",
             style: TextStyle(color: Colors.white),
           ),
         ),
