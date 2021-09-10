@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trishi/global/global.dart';
 import '../widgets/body_part_card.dart';
 // import 'package:trishi/global/global.dart';
 import 'bmi_page.dart';
@@ -40,6 +41,34 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Column(
         children: [
+          // if (bmi != null)
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
+            margin: EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Your BMI is: \n ${1}", // TODO: fix the number
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        color: Colors.white,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            decoration: BoxDecoration(
+              color: Theme.of(context).primaryColor,
+              // color: Color(0xFFF7F5C9),
+              borderRadius: Global().borderRadius15,
+            ),
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
