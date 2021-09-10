@@ -95,15 +95,7 @@ class _BmiEntryState extends State<BmiEntry> {
         title: Text("BMI Calculation"),
       ),
       body: !isLoaded
-          ? Container(
-              width: double.infinity,
-              height: double.infinity,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CircularProgressIndicator(),
-                ],
-              ))
+          ? Center(child: CircularProgressIndicator())
           : Container(
               padding: Global().screenPadding,
               child: Form(
@@ -201,7 +193,7 @@ class _BmiEntryState extends State<BmiEntry> {
                         });
                       },
                     ),
-                    if (bmi!= null) // TODO: fix this if statement
+                    if (bmi != null) // TODO: fix this if statement
                       Container(
                         padding: EdgeInsets.symmetric(vertical: 15),
                         margin: EdgeInsets.symmetric(

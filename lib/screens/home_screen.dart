@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trishi/global/global.dart';
+import 'package:trishi/model/body_model.dart';
+import 'package:trishi/provider/bmi_provider.dart';
 import '../widgets/body_part_card.dart';
 // import 'package:trishi/global/global.dart';
 import 'bmi_page.dart';
@@ -12,6 +16,20 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  BMiModel? _bMiModel;
+
+  @override
+  void didChangeDependencies() {
+    Provider.of<BmiProvider>(context, listen: false)
+        .fetchBMIData()
+        .then((value) {
+      setState(() {
+        _bMiModel = Provider.of<BmiProvider>(context, listen: false).bmiData;
+      });
+    });
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +40,6 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton: InkWell(
         child: Container(
           height: 50,
-          // padding: EdgeInsets.symmetric(vertical: 20.0),
           margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
           decoration: BoxDecoration(
             color: Theme.of(context).primaryColor,
@@ -41,34 +58,28 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Column(
         children: [
-          // if (bmi != null)
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
-            margin: EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Your BMI is: \n ${1}", // TODO: fix the number
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        color: Colors.white,
-                      ),
-                      textAlign: TextAlign.center,
+          if (_bMiModel?.bmi != null)
+            Container(
+              padding: Global().screenPadding,
+              margin: EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    "Your BMI is: ${_bMiModel!.bmi.toStringAsFixed(3)}",
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      color: Colors.white,
                     ),
-                  ],
-                ),
-              ],
+                    textAlign: TextAlign.left,
+                  ),
+                ],
+              ),
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+                borderRadius: Global().borderRadius15,
+              ),
             ),
-            decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
-              // color: Color(0xFFF7F5C9),
-              borderRadius: Global().borderRadius15,
-            ),
-          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
