@@ -81,6 +81,9 @@ class _BmiEntryState extends State<BmiEntry> {
           isLoaded = true;
         });
       }
+      setState(() {
+        isLoaded = true;
+      });
     }
     super.didChangeDependencies();
   }

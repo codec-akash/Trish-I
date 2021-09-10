@@ -12,9 +12,9 @@ class BMiModel {
   });
 
   BMiModel.fromJson(Map<String, dynamic> json) {
-    this.age = int.tryParse(json['age']) ?? 0;
-    this.height = double.tryParse(json['height']) ?? 0.0;
-    this.weight = double.tryParse(json['weight']) ?? 0.0;
-    this.bmi = double.tryParse(json['bmi']) ?? 0.0;
+    this.age = json['age'] ?? 0;
+    this.height = json['height'] ?? 0.0;
+    this.weight = json['weight'] ?? 0.0;
+    this.bmi = json['bmi'] ?? 0.0;
   }
 }
