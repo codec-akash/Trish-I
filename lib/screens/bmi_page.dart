@@ -98,7 +98,12 @@ class _BmiEntryState extends State<BmiEntry> {
           ? Container(
               width: double.infinity,
               height: double.infinity,
-              child: CircularProgressIndicator())
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(),
+                ],
+              ))
           : Container(
               padding: Global().screenPadding,
               child: Form(
@@ -196,11 +201,34 @@ class _BmiEntryState extends State<BmiEntry> {
                         });
                       },
                     ),
-                    if (bmi != null)
+                    if (bmi!= null) // TODO: fix this if statement
                       Container(
-                        // height: double.infinity,
-                        // width: double.infinity,
-                        child: Text(bmi.toString()),
+                        padding: EdgeInsets.symmetric(vertical: 15),
+                        margin: EdgeInsets.symmetric(
+                            vertical: 20.0, horizontal: 1.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Your BMI is: \n ${bmi?.toStringAsFixed(3)}",
+                                  style: TextStyle(
+                                    fontSize: 20.0,
+                                    color: Colors.white,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).primaryColor,
+                          // color: Color(0xFFF7F5C9),
+                          borderRadius: Global().borderRadius15,
+                        ),
                       ),
                     Spacer(),
                     InkWell(
