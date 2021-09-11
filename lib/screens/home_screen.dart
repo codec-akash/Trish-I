@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trishi/global/global.dart';
 import 'package:trishi/model/body_model.dart';
 import 'package:trishi/provider/bmi_provider.dart';
