@@ -107,7 +107,7 @@ class _BmiEntryState extends State<BmiEntry> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Expanded(
-                          flex: 2,
+                          flex: 3,
                           child: TextFormField(
                             initialValue: userData['height']?.toString(),
                             decoration: InputDecoration(
@@ -161,21 +161,21 @@ class _BmiEntryState extends State<BmiEntry> {
                               items: [
                                 DropdownMenuItem(
                                   child: Text(
-                                    "Meter (m)",
+                                    "m",
                                     style: TextStyle(fontSize: 14.0),
                                   ),
                                   value: 1,
                                 ),
                                 DropdownMenuItem(
                                   child: Text(
-                                    "Centimeter (cm)",
+                                    "cm",
                                     style: TextStyle(fontSize: 14.0),
                                   ),
                                   value: 2,
                                 ),
                                 DropdownMenuItem(
                                   child: Text(
-                                    "Foots (ft)",
+                                    "ft",
                                     style: TextStyle(fontSize: 14.0),
                                   ),
                                   value: 3,
@@ -191,7 +191,7 @@ class _BmiEntryState extends State<BmiEntry> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Expanded(
-                          flex: 2,
+                          flex: 3,
                           child: TextFormField(
                             initialValue: userData['weight']?.toString(),
                             decoration: InputDecoration(
@@ -245,20 +245,19 @@ class _BmiEntryState extends State<BmiEntry> {
                               items: [
                                 DropdownMenuItem(
                                   child: Text(
-                                    "Kilogram (kg)",
+                                    "Kg",
                                     style: TextStyle(fontSize: 14.0),
                                   ),
                                   value: 1,
                                 ),
                                 DropdownMenuItem(
                                   child: Text(
-                                    "Pounds (lb)",
+                                    "Lb",
                                     style: TextStyle(fontSize: 14.0),
                                   ),
                                   value: 2,
                                 )
                               ],
-                              
                             ),
                           ),
                         )
@@ -329,8 +328,8 @@ class _BmiEntryState extends State<BmiEntry> {
                     InkWell(
                       child: Container(
                         width: double.infinity,
-                        padding: EdgeInsets.symmetric(vertical: 15.0),
-                        margin: EdgeInsets.symmetric(horizontal: 15.0),
+                        height: 50,
+                        margin: EdgeInsets.symmetric(horizontal: 10.0),
                         decoration: BoxDecoration(
                           color: Theme.of(context).primaryColor,
                           borderRadius: Global().borderRadius15,
