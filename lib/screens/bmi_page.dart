@@ -27,6 +27,7 @@ class _BmiEntryState extends State<BmiEntry> {
   bool isLoaded = false;
 
   int age = 0;
+  int dropdownValue = 1;
 
   double? height;
   double? weight;
@@ -102,64 +103,165 @@ class _BmiEntryState extends State<BmiEntry> {
                 key: _formKey,
                 child: Column(
                   children: [
-                    TextFormField(
-                      initialValue: userData['height']?.toString(),
-                      decoration: InputDecoration(
-                        labelText: "Enter Height(meter)",
-                        border: OutlineInputBorder(
-                          borderSide: Global().textFieldBorderSide,
-                          borderRadius: Global().borderRadius15,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          flex: 3,
+                          child: TextFormField(
+                            initialValue: userData['height']?.toString(),
+                            decoration: InputDecoration(
+                              labelText: "Enter Height(meter)",
+                              border: OutlineInputBorder(
+                                borderSide: Global().textFieldBorderSide,
+                                borderRadius: Global().borderRadius15,
+                              ),
+                            ),
+                            keyboardType: TextInputType.number,
+                            validator: (value) {
+                              if (value == null) {
+                                return "Enter Height!";
+                              }
+                              if (value.isEmpty) {
+                                return "Height Cannot be empty";
+                              }
+                              double height = double.tryParse(value) ?? 0.0;
+                              if (height <= 0.0) {
+                                return "Enter a Valid Height";
+                              }
+                              return null;
+                            },
+                            onChanged: (value) {
+                              setState(() {
+                                height = double.tryParse(value) ?? 0.0;
+                              });
+                            },
+                          ),
                         ),
-                      ),
-                      keyboardType: TextInputType.number,
-                      validator: (value) {
-                        if (value == null) {
-                          return "Enter Height!";
-                        }
-                        if (value.isEmpty) {
-                          return "Height Cannot be empty";
-                        }
-                        double height = double.tryParse(value) ?? 0.0;
-                        if (height <= 0.0) {
-                          return "Enter a Valid Height";
-                        }
-                        return null;
-                      },
-                      onChanged: (value) {
-                        setState(() {
-                          height = double.tryParse(value) ?? 0.0;
-                        });
-                      },
+                        Expanded(
+                          child: Container(
+                            margin: EdgeInsets.symmetric(
+                              vertical: 10.0,
+                              horizontal: 10.0,
+                            ),
+                            padding: EdgeInsets.symmetric(
+                              vertical: 1.0,
+                              horizontal: 5.0,
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: Global().borderRadius15,
+                            ),
+                            child: DropdownButton(
+                              value: dropdownValue,
+                              // onChanged: (int newValue) {
+                              //   setState(() {
+                              //     dropDownValue = newValue;
+                              //   });
+                              // },
+                              items: [
+                                DropdownMenuItem(
+                                  child: Text(
+                                    "m",
+                                    style: TextStyle(fontSize: 14.0),
+                                  ),
+                                  value: 1,
+                                ),
+                                DropdownMenuItem(
+                                  child: Text(
+                                    "cm",
+                                    style: TextStyle(fontSize: 14.0),
+                                  ),
+                                  value: 2,
+                                ),
+                                DropdownMenuItem(
+                                  child: Text(
+                                    "ft",
+                                    style: TextStyle(fontSize: 14.0),
+                                  ),
+                                  value: 3,
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
                     ),
                     SizedBox(height: 15),
-                    TextFormField(
-                      initialValue: userData['weight']?.toString(),
-                      decoration: InputDecoration(
-                        labelText: "Enter Weight(Kg)",
-                        border: OutlineInputBorder(
-                          borderSide: Global().textFieldBorderSide,
-                          borderRadius: Global().borderRadius15,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          flex: 3,
+                          child: TextFormField(
+                            initialValue: userData['weight']?.toString(),
+                            decoration: InputDecoration(
+                              labelText: "Enter Weight(Kg)",
+                              border: OutlineInputBorder(
+                                borderSide: Global().textFieldBorderSide,
+                                borderRadius: Global().borderRadius15,
+                              ),
+                            ),
+                            keyboardType: TextInputType.number,
+                            validator: (value) {
+                              if (value == null) {
+                                return "Enter Weight!";
+                              }
+                              if (value.isEmpty) {
+                                return "Weight Cannot be empty";
+                              }
+                              double weight = double.tryParse(value) ?? 0.0;
+                              if (weight <= 0.0) {
+                                return "Enter a Valid Weight";
+                              }
+                              return null;
+                            },
+                            onChanged: (value) {
+                              setState(() {
+                                weight = double.tryParse(value) ?? 0.0;
+                              });
+                            },
+                          ),
                         ),
-                      ),
-                      keyboardType: TextInputType.number,
-                      validator: (value) {
-                        if (value == null) {
-                          return "Enter Weight!";
-                        }
-                        if (value.isEmpty) {
-                          return "Weight Cannot be empty";
-                        }
-                        double weight = double.tryParse(value) ?? 0.0;
-                        if (weight <= 0.0) {
-                          return "Enter a Valid Weight";
-                        }
-                        return null;
-                      },
-                      onChanged: (value) {
-                        setState(() {
-                          weight = double.tryParse(value) ?? 0.0;
-                        });
-                      },
+                        Expanded(
+                          child: Container(
+                            margin: EdgeInsets.symmetric(
+                              vertical: 10.0,
+                              horizontal: 10.0,
+                            ),
+                            padding: EdgeInsets.symmetric(
+                              vertical: 1.0,
+                              horizontal: 5.0,
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: Global().borderRadius15,
+                            ),
+                            child: DropdownButton(
+                              value: dropdownValue,
+                              // onChanged: (newValue) {
+                              //   setState(() {
+                              //     dropDownValue = newValue;
+                              //   });
+                              // },
+                              items: [
+                                DropdownMenuItem(
+                                  child: Text(
+                                    "Kg",
+                                    style: TextStyle(fontSize: 14.0),
+                                  ),
+                                  value: 1,
+                                ),
+                                DropdownMenuItem(
+                                  child: Text(
+                                    "Lb",
+                                    style: TextStyle(fontSize: 14.0),
+                                  ),
+                                  value: 2,
+                                )
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
                     ),
                     SizedBox(height: 15),
                     TextFormField(
@@ -193,7 +295,7 @@ class _BmiEntryState extends State<BmiEntry> {
                         });
                       },
                     ),
-                    if (bmi != null) // TODO: fix this if statement
+                    if (bmi != null)
                       Container(
                         padding: EdgeInsets.symmetric(vertical: 15),
                         margin: EdgeInsets.symmetric(
@@ -226,8 +328,8 @@ class _BmiEntryState extends State<BmiEntry> {
                     InkWell(
                       child: Container(
                         width: double.infinity,
-                        padding: EdgeInsets.symmetric(vertical: 15.0),
-                        margin: EdgeInsets.symmetric(horizontal: 15.0),
+                        height: 50,
+                        margin: EdgeInsets.symmetric(horizontal: 10.0),
                         decoration: BoxDecoration(
                           color: Theme.of(context).primaryColor,
                           borderRadius: Global().borderRadius15,

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trishi/global/global.dart';
 import 'package:trishi/model/body_model.dart';
 import 'package:trishi/provider/bmi_provider.dart';
@@ -39,11 +38,15 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: InkWell(
         child: Container(
+          width: double.infinity,
           height: 50,
-          margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
+          margin: EdgeInsets.symmetric(
+            horizontal: 20.0,
+            vertical: 15.0,
+          ),
           decoration: BoxDecoration(
             color: Theme.of(context).primaryColor,
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: Global().borderRadius15,
           ),
           alignment: Alignment.center,
           child: Text(
