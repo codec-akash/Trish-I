@@ -19,15 +19,23 @@ class BmiEntry extends StatefulWidget {
 class _BmiEntryState extends State<BmiEntry> {
   final _formKey = GlobalKey<FormState>();
   late SharedPreferences _preferences;
-  Map<String, dynamic> userData = {};
   late BMiModel _userBmiData;
+
+  Map<String, dynamic> userData = {};
+
+  List<String> heightMap = ['m', 'cm', 'ft'];
+  List<String> weightMap = ['kg', 'lb'];
 
   BmiRepo _bmiRepo = BmiRepo();
 
   bool isLoaded = false;
 
+  late String heightDropdown = heightMap[0];
+  late String weightDropDown = weightMap[0];
+  late double? givenHeight;
+  late double? givenWeight;
+
   int age = 0;
-  int dropdownValue = 1;
 
   double? height;
   double? weight;
@@ -46,6 +54,10 @@ class _BmiEntryState extends State<BmiEntry> {
   void submitButton() async {
     var isValid = _formKey.currentState?.validate() ?? false;
     if (isValid) {
+      weight = _bmiRepo.calculateWeight(
+          weight: givenWeight!, weightUnit: weightDropDown);
+      height = _bmiRepo.calculateHeight(
+          height: givenHeight!, heightUnit: heightDropdown);
       bmi = _bmiRepo.calculateBMI(height: height!, weight: weight!);
 
       print(bmi);
@@ -55,6 +67,10 @@ class _BmiEntryState extends State<BmiEntry> {
         "weight": weight,
         "height": height,
         "bmi": bmi,
+        "height_unit": heightDropdown,
+        "weight_unit": weightDropDown,
+        "given_height": givenHeight,
+        "given_weight": givenWeight
       };
 
       String userJson = json.encode(userData);
@@ -80,6 +96,10 @@ class _BmiEntryState extends State<BmiEntry> {
           height = _userBmiData.height;
           bmi = _userBmiData.bmi;
           isLoaded = true;
+          givenHeight = _userBmiData.givenHeight;
+          givenWeight = _userBmiData.givenWeight;
+          weightDropDown = _userBmiData.weightUnit;
+          heightDropdown = _userBmiData.heightUnit;
         });
       }
       setState(() {
@@ -109,9 +129,9 @@ class _BmiEntryState extends State<BmiEntry> {
                         Expanded(
                           flex: 3,
                           child: TextFormField(
-                            initialValue: userData['height']?.toString(),
+                            initialValue: givenHeight?.toString(),
                             decoration: InputDecoration(
-                              labelText: "Enter Height(meter)",
+                              labelText: "Enter Height",
                               border: OutlineInputBorder(
                                 borderSide: Global().textFieldBorderSide,
                                 borderRadius: Global().borderRadius15,
@@ -133,7 +153,7 @@ class _BmiEntryState extends State<BmiEntry> {
                             },
                             onChanged: (value) {
                               setState(() {
-                                height = double.tryParse(value) ?? 0.0;
+                                givenHeight = double.tryParse(value) ?? 0.0;
                               });
                             },
                           ),
@@ -152,35 +172,18 @@ class _BmiEntryState extends State<BmiEntry> {
                               borderRadius: Global().borderRadius15,
                             ),
                             child: DropdownButton(
-                              value: dropdownValue,
-                              // onChanged: (int newValue) {
-                              //   setState(() {
-                              //     dropDownValue = newValue;
-                              //   });
-                              // },
-                              items: [
-                                DropdownMenuItem(
-                                  child: Text(
-                                    "m",
-                                    style: TextStyle(fontSize: 14.0),
-                                  ),
-                                  value: 1,
-                                ),
-                                DropdownMenuItem(
-                                  child: Text(
-                                    "cm",
-                                    style: TextStyle(fontSize: 14.0),
-                                  ),
-                                  value: 2,
-                                ),
-                                DropdownMenuItem(
-                                  child: Text(
-                                    "ft",
-                                    style: TextStyle(fontSize: 14.0),
-                                  ),
-                                  value: 3,
-                                ),
-                              ],
+                              value: heightDropdown,
+                              items: heightMap.map((val) {
+                                return DropdownMenuItem(
+                                  child: Text(val),
+                                  value: val,
+                                );
+                              }).toList(),
+                              onChanged: (val) {
+                                setState(() {
+                                  heightDropdown = val.toString();
+                                });
+                              },
                             ),
                           ),
                         )
@@ -193,9 +196,10 @@ class _BmiEntryState extends State<BmiEntry> {
                         Expanded(
                           flex: 3,
                           child: TextFormField(
-                            initialValue: userData['weight']?.toString(),
+                            // initialValue: userData['weight']?.toString(),
+                            initialValue: givenWeight?.toString(),
                             decoration: InputDecoration(
-                              labelText: "Enter Weight(Kg)",
+                              labelText: "Enter Weight",
                               border: OutlineInputBorder(
                                 borderSide: Global().textFieldBorderSide,
                                 borderRadius: Global().borderRadius15,
@@ -217,7 +221,7 @@ class _BmiEntryState extends State<BmiEntry> {
                             },
                             onChanged: (value) {
                               setState(() {
-                                weight = double.tryParse(value) ?? 0.0;
+                                givenWeight = double.tryParse(value) ?? 0.0;
                               });
                             },
                           ),
@@ -236,28 +240,18 @@ class _BmiEntryState extends State<BmiEntry> {
                               borderRadius: Global().borderRadius15,
                             ),
                             child: DropdownButton(
-                              value: dropdownValue,
-                              // onChanged: (newValue) {
-                              //   setState(() {
-                              //     dropDownValue = newValue;
-                              //   });
-                              // },
-                              items: [
-                                DropdownMenuItem(
-                                  child: Text(
-                                    "Kg",
-                                    style: TextStyle(fontSize: 14.0),
-                                  ),
-                                  value: 1,
-                                ),
-                                DropdownMenuItem(
-                                  child: Text(
-                                    "Lb",
-                                    style: TextStyle(fontSize: 14.0),
-                                  ),
-                                  value: 2,
-                                )
-                              ],
+                              value: weightDropDown,
+                              items: weightMap.map((val) {
+                                return DropdownMenuItem(
+                                  child: Text(val),
+                                  value: val,
+                                );
+                              }).toList(),
+                              onChanged: (val) {
+                                setState(() {
+                                  weightDropDown = val.toString();
+                                });
+                              },
                             ),
                           ),
                         )
