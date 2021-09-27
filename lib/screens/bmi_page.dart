@@ -32,8 +32,8 @@ class _BmiEntryState extends State<BmiEntry> {
 
   late String heightDropdown = heightMap[0];
   late String weightDropDown = weightMap[0];
-  late double? givenHeight;
-  late double? givenWeight;
+  late double? givenHeight = 0.0;
+  late double? givenWeight = 0.0;
 
   int age = 0;
 

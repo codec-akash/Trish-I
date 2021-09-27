@@ -1,4 +1,9 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:provider/provider.dart';
 import 'package:trishi/global/global.dart';
 import 'package:trishi/model/body_model.dart';
@@ -16,9 +21,14 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   BMiModel? _bMiModel;
+  String address = "";
+  List<BluetoothDiscoveryResult> results = <BluetoothDiscoveryResult>[];
+  StreamSubscription? streamSubscription;
+  BluetoothConnection? connection;
 
   @override
   void didChangeDependencies() {
+    startDiscovery();
     Provider.of<BmiProvider>(context, listen: false)
         .fetchBMIData()
         .then((value) {
@@ -27,6 +37,39 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     });
     super.didChangeDependencies();
+  }
+
+  void startDiscovery() {
+    streamSubscription =
+        FlutterBluetoothSerial.instance.startDiscovery().listen((r) {
+      results.add(r);
+    });
+    FlutterBluetoothSerial.instance.address.then((value) {
+      if (value != null) {
+        setState(() {
+          address = value;
+        });
+      }
+    });
+
+    streamSubscription!.onDone(() {
+      //Do something when the discovery process ends
+      connect(address);
+    });
+  }
+
+  connect(String address) async {
+    try {
+      connection = await BluetoothConnection.toAddress(address);
+      print('Connected to the device');
+
+      connection!.input!.listen((Uint8List data) {
+        //Data entry point
+        print(ascii.decode(data));
+      });
+    } catch (exception) {
+      print('Cannot connect, exception occured');
+    }
   }
 
   @override
