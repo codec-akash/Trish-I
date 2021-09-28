@@ -17,8 +17,11 @@ class _SliderWidgetState extends State<SliderWidget> {
           flex: 1,
           child: Slider(
             value: _value.toDouble(),
-            max: 20,
+            activeColor: Theme.of(context).primaryColor,
             min: 0,
+            max: 80,
+            divisions: 8,
+            label: "$_value",
             onChanged: (double value) {
               setState(() {
                 _value = value.round();
