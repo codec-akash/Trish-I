@@ -28,7 +28,6 @@ class _BmiEntryState extends State<BmiEntry> {
   List<String> weightMap = ['kg', 'lb'];
 
   BmiRepo _bmiRepo = BmiRepo();
-  SliderWidget _sliderWidget = SliderWidget();
 
   bool isLoaded = false;
 
@@ -74,8 +73,6 @@ class _BmiEntryState extends State<BmiEntry> {
         "given_height": givenHeight,
         "given_weight": givenWeight
       };
-
-      _sliderWidget.getBmi(bmi, age);
 
       String userJson = json.encode(userData);
 

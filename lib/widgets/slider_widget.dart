@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 
 class SliderWidget extends StatefulWidget {
-  const SliderWidget({Key? key}) : super(key: key);
+  final double bmiValue;
+  final int age;
+  const SliderWidget({Key? key, required this.bmiValue, required this.age})
+      : super(key: key);
 
   @override
   _SliderWidgetState createState() => _SliderWidgetState();
-
-  void getBmi(double? bmi, int? age) {}
 }
 
 class _SliderWidgetState extends State<SliderWidget> {
   int _value = 0;
 
-  int? freqCheck(String? bmiStatus, int? age) {
+  int freqCheck(String? bmiStatus, int? age) {
     if (bmiStatus == 'Underweight') {
       if ((age! >= 20) && (age <= 50)) {
         return 40;
@@ -48,6 +49,7 @@ class _SliderWidgetState extends State<SliderWidget> {
         return 30;
       }
     }
+    return 20;
   }
 
   void getBmi(double? bmiValue, int? age) {
@@ -68,6 +70,7 @@ class _SliderWidgetState extends State<SliderWidget> {
       bmiStatus = 'Obese';
     }
     print('Freq: ${freqCheck(bmiStatus, age)}');
+    _value = freqCheck(bmiStatus, age);
   }
 
   @override

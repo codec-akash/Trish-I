@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import 'package:trishi/global/global.dart';
+import 'package:trishi/model/body_model.dart';
+import 'package:trishi/provider/bmi_provider.dart';
 import 'package:trishi/widgets/slider_widget.dart';
 
 class PressureAdjust extends StatefulWidget {
@@ -16,6 +19,20 @@ class PressureAdjust extends StatefulWidget {
 }
 
 class _PressureAdjustState extends State<PressureAdjust> {
+  BMiModel? _bMiModel;
+
+  @override
+  void didChangeDependencies() {
+    Provider.of<BmiProvider>(context, listen: false)
+        .fetchBMIData()
+        .then((value) {
+      setState(() {
+        _bMiModel = Provider.of<BmiProvider>(context, listen: false).bmiData;
+      });
+    });
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +49,10 @@ class _PressureAdjustState extends State<PressureAdjust> {
               height: 110,
               color: Theme.of(context).primaryColor,
             ),
-            SliderWidget(),
+            SliderWidget(
+              bmiValue: _bMiModel!.bmi,
+              age: _bMiModel!.age,
+            ),
             Expanded(
                 flex: 3,
                 child: Column(
