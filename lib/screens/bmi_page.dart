@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trishi/global/global.dart';
 import 'package:trishi/model/body_model.dart';
 import 'package:trishi/repository/bmi_repo.dart';
+import 'package:trishi/widgets/slider_widget.dart';
 
 import 'home_screen.dart';
 
@@ -27,6 +28,7 @@ class _BmiEntryState extends State<BmiEntry> {
   List<String> weightMap = ['kg', 'lb'];
 
   BmiRepo _bmiRepo = BmiRepo();
+  SliderWidget _sliderWidget = SliderWidget();
 
   bool isLoaded = false;
 
@@ -72,6 +74,8 @@ class _BmiEntryState extends State<BmiEntry> {
         "given_height": givenHeight,
         "given_weight": givenWeight
       };
+
+      _sliderWidget.getBmi(bmi, age);
 
       String userJson = json.encode(userData);
 
