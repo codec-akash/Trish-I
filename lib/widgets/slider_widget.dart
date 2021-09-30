@@ -74,6 +74,13 @@ class _SliderWidgetState extends State<SliderWidget> {
   }
 
   @override
+  void initState() {
+    getBmi(widget.bmiValue, widget.age);
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       child: Flexible(

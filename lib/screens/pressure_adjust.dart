@@ -20,16 +20,24 @@ class PressureAdjust extends StatefulWidget {
 
 class _PressureAdjustState extends State<PressureAdjust> {
   BMiModel? _bMiModel;
+  bool isLoading = true;
+  bool isInit = true;
 
   @override
   void didChangeDependencies() {
-    Provider.of<BmiProvider>(context, listen: false)
-        .fetchBMIData()
-        .then((value) {
-      setState(() {
-        _bMiModel = Provider.of<BmiProvider>(context, listen: false).bmiData;
+    if (isInit) {
+      Provider.of<BmiProvider>(context, listen: false)
+          .fetchBMIData()
+          .then((value) {
+        setState(() {
+          _bMiModel = Provider.of<BmiProvider>(context, listen: false).bmiData;
+        });
       });
-    });
+      setState(() {
+        isLoading = false;
+        isInit = false;
+      });
+    }
     super.didChangeDependencies();
   }
 
@@ -39,58 +47,62 @@ class _PressureAdjustState extends State<PressureAdjust> {
       appBar: AppBar(
         title: Text(widget.bodyPart),
       ),
-      body: Container(
-        padding: Global().screenPadding,
-        child: Column(
-          children: [
-            SvgPicture.asset(
-              widget.imagePath,
-              width: 110,
-              height: 110,
-              color: Theme.of(context).primaryColor,
+      body: isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : Container(
+              padding: Global().screenPadding,
+              child: Column(
+                children: [
+                  SvgPicture.asset(
+                    widget.imagePath,
+                    width: 110,
+                    height: 110,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  SliderWidget(
+                    bmiValue: _bMiModel?.bmi ?? 21.5,
+                    age: _bMiModel?.age ?? 21,
+                  ),
+                  Expanded(
+                      flex: 3,
+                      child: Column(
+                        children: [
+                          Container(
+                            child: Text(
+                              "1. This is Information 1 which can be provided for this specific body part",
+                              style: TextStyle(
+                                fontSize: 22,
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.symmetric(vertical: 10),
+                            child: Text(
+                              "2. This is Information 2 which can be provided for this specific body part",
+                              style: TextStyle(
+                                fontSize: 22,
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.symmetric(vertical: 10),
+                            child: Text(
+                              "3. This is Information 3 which can be provided as precautions for this specific body part",
+                              style: TextStyle(
+                                fontSize: 22,
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
+                          ),
+                        ],
+                      )),
+                ],
+              ),
             ),
-            SliderWidget(
-              bmiValue: _bMiModel!.bmi,
-              age: _bMiModel!.age,
-            ),
-            Expanded(
-                flex: 3,
-                child: Column(
-                  children: [
-                    Container(
-                      child: Text(
-                        "1. This is Information 1 which can be provided for this specific body part",
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontStyle: FontStyle.italic,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.symmetric(vertical: 10),
-                      child: Text(
-                        "2. This is Information 2 which can be provided for this specific body part",
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontStyle: FontStyle.italic,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.symmetric(vertical: 10),
-                      child: Text(
-                        "3. This is Information 3 which can be provided as precautions for this specific body part",
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontStyle: FontStyle.italic,
-                        ),
-                      ),
-                    ),
-                  ],
-                )),
-          ],
-        ),
-      ),
     );
   }
 }
