@@ -6,10 +6,12 @@ import 'package:trishi/screens/pressure_adjust.dart';
 class BodypartCard extends StatelessWidget {
   final String imagePath;
   final String bodyPart;
+  final Function sendData;
   const BodypartCard({
     Key? key,
     required this.imagePath,
     required this.bodyPart,
+    required this.sendData,
   }) : super(key: key);
 
   @override
@@ -20,6 +22,7 @@ class BodypartCard extends StatelessWidget {
             builder: (context) => PressureAdjust(
                   imagePath: imagePath,
                   bodyPart: bodyPart,
+                  sendData: sendData,
                 )));
       },
       child: Container(

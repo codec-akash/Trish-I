@@ -10,8 +10,12 @@ import 'package:trishi/widgets/slider_widget.dart';
 class PressureAdjust extends StatefulWidget {
   final String imagePath;
   final String bodyPart;
+  final Function sendData;
   const PressureAdjust(
-      {Key? key, required this.imagePath, required this.bodyPart})
+      {Key? key,
+      required this.imagePath,
+      required this.bodyPart,
+      required this.sendData})
       : super(key: key);
 
   @override
@@ -64,6 +68,7 @@ class _PressureAdjustState extends State<PressureAdjust> {
                   SliderWidget(
                     bmiValue: _bMiModel?.bmi ?? 21.5,
                     age: _bMiModel?.age ?? 21,
+                    sendData: widget.sendData,
                   ),
                   Expanded(
                       flex: 3,

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:provider/provider.dart';
 import 'package:trishi/global/global.dart';
@@ -21,55 +22,150 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   BMiModel? _bMiModel;
-  String address = "";
-  List<BluetoothDiscoveryResult> results = <BluetoothDiscoveryResult>[];
-  StreamSubscription? streamSubscription;
+  BluetoothState _bluetoothState = BluetoothState.UNKNOWN;
+
+  // Get the instance of the Bluetooth
+  FlutterBluetoothSerial _bluetooth = FlutterBluetoothSerial.instance;
+
+  // Track the Bluetooth connection with the remote device
   BluetoothConnection? connection;
+
+  // To track whether the device is still connected to Bluetooth
+  bool get isConnected =>
+      connection != null && (connection?.isConnected ?? false);
+  bool isint = true;
+  bool _connected = false;
+
+  bool _isButtonUnavailable = false;
+
+  int _deviceState = 0;
+  late BluetoothDevice _device;
 
   @override
   void didChangeDependencies() {
-    startDiscovery();
-    Provider.of<BmiProvider>(context, listen: false)
-        .fetchBMIData()
-        .then((value) {
-      setState(() {
-        _bMiModel = Provider.of<BmiProvider>(context, listen: false).bmiData;
+    if (isint) {
+      Provider.of<BmiProvider>(context, listen: false)
+          .fetchBMIData()
+          .then((value) {
+        setState(() {
+          _bMiModel = Provider.of<BmiProvider>(context, listen: false).bmiData;
+        });
       });
-    });
+    }
     super.didChangeDependencies();
   }
 
-  void startDiscovery() {
-    streamSubscription =
-        FlutterBluetoothSerial.instance.startDiscovery().listen((r) {
-      results.add(r);
+  @override
+  void initState() {
+    super.initState();
+    FlutterBluetoothSerial.instance.state.then((state) {
+      setState(() {
+        _bluetoothState = state;
+      });
     });
-    FlutterBluetoothSerial.instance.address.then((value) {
-      if (value != null) {
-        setState(() {
-          address = value;
-        });
-      }
-    });
-
-    streamSubscription!.onDone(() {
-      //Do something when the discovery process ends
-      connect(address);
+    enableBluetooth();
+    FlutterBluetoothSerial.instance
+        .onStateChanged()
+        .listen((BluetoothState state) {
+      setState(() {
+        _bluetoothState = state;
+        getPairedDevices();
+        isint = false;
+      });
     });
   }
 
-  connect(String address) async {
-    try {
-      connection = await BluetoothConnection.toAddress(address);
-      print('Connected to the device');
-
-      connection!.input!.listen((Uint8List data) {
-        //Data entry point
-        print(ascii.decode(data));
-      });
-    } catch (exception) {
-      print('Cannot connect, exception occured');
+  Future<bool> enableBluetooth() async {
+    _bluetoothState = await FlutterBluetoothSerial.instance.state;
+    if (_bluetoothState == BluetoothState.STATE_OFF) {
+      await FlutterBluetoothSerial.instance.requestEnable();
+      await getPairedDevices();
+      return true;
+    } else {
+      await getPairedDevices();
     }
+    return false;
+  }
+
+  void _connect() async {
+    if (_device == null) {
+      print('No device selected');
+    } else {
+      if (!isConnected) {
+        await BluetoothConnection.toAddress(_device.address)
+            .then((_connection) {
+          print('Connected to the device');
+          connection = _connection;
+          setState(() {
+            _connected = true;
+          });
+          connection!.input!.listen(null).onDone(() {
+            if (isDisconnecting) {
+              print('Disconnecting locally!');
+            } else {
+              print('Disconnected remotely!');
+            }
+            if (this.mounted) {
+              setState(() {});
+            }
+          });
+        }).catchError((error) {
+          print('Cannot connect, exception occurred');
+          print(error);
+        });
+        print('Device connected');
+      }
+    }
+  }
+
+  void _disconnect() async {
+    await connection!.close();
+    print('Device disconnected');
+    if (!connection!.isConnected) {
+      setState(() {
+        _connected = false;
+      });
+    }
+  }
+
+  List<BluetoothDevice> _devicesList = [];
+
+  Future<void> getPairedDevices() async {
+    List<BluetoothDevice> devices = [];
+    try {
+      devices = await _bluetooth.getBondedDevices();
+    } on PlatformException {
+      print("Error");
+    }
+    if (!mounted) {
+      return;
+    }
+    setState(() {
+      _devicesList = devices;
+    });
+  }
+
+  List<DropdownMenuItem<BluetoothDevice>> _getDeviceItems() {
+    List<DropdownMenuItem<BluetoothDevice>> items = [];
+    if (_devicesList.isEmpty) {
+      items.add(DropdownMenuItem(
+        child: Text('NONE'),
+      ));
+    } else {
+      _devicesList.forEach((device) {
+        items.add(DropdownMenuItem(
+          child: Text(device.name ?? ""),
+          value: device,
+        ));
+      });
+    }
+    return items;
+  }
+
+  void _sendOnMessageToBluetooth(String sliderValue) async {
+    connection!.output.add(utf8.encoder.convert(sliderValue));
+    await connection!.output.allSent;
+    print('Data sent');
   }
 
   @override
@@ -77,6 +173,32 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Trish - I"),
+        actions: <Widget>[
+          FlatButton.icon(
+            icon: Icon(
+              Icons.refresh,
+              color: Colors.white,
+            ),
+            label: Text(
+              "Refresh",
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30),
+            ),
+            splashColor: Colors.deepPurple,
+            onPressed: () async {
+              // So, that when new devices are paired
+              // while the app is running, user can refresh
+              // the paired devices list.
+              await getPairedDevices().then((_) {
+                print('Device list refreshed');
+              });
+            },
+          ),
+        ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: InkWell(
@@ -126,6 +248,98 @@ class _HomeScreenState extends State<HomeScreen> {
                 borderRadius: Global().borderRadius15,
               ),
             ),
+          Visibility(
+            visible: _isButtonUnavailable &&
+                _bluetoothState == BluetoothState.STATE_ON,
+            child: LinearProgressIndicator(
+              backgroundColor: Colors.yellow,
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Expanded(
+                  child: Text(
+                    'Enable Bluetooth',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                Switch(
+                  value: _bluetoothState.isEnabled,
+                  onChanged: (bool value) {
+                    future() async {
+                      if (value) {
+                        await FlutterBluetoothSerial.instance.requestEnable();
+                      } else {
+                        await FlutterBluetoothSerial.instance.requestDisable();
+                      }
+
+                      await getPairedDevices();
+                      _isButtonUnavailable = false;
+
+                      if (_connected) {
+                        _disconnect();
+                      }
+                    }
+
+                    future().then((_) {
+                      setState(() {});
+                    });
+                  },
+                )
+              ],
+            ),
+          ),
+          Stack(
+            children: <Widget>[
+              Column(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Text(
+                      "PAIRED DEVICES",
+                      style: TextStyle(fontSize: 24, color: Colors.blue),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          'Device:',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        DropdownButton(
+                          items: _getDeviceItems(),
+                          value: _devicesList.isNotEmpty ? _device : null,
+                          onChanged: (value) => setState(
+                              () => _device = value as BluetoothDevice),
+                        ),
+                        RaisedButton(
+                          onPressed: _isButtonUnavailable
+                              ? null
+                              : _connected
+                                  ? _disconnect
+                                  : _connect,
+                          child: Text(_connected ? 'Disconnect' : 'Connect'),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -133,11 +347,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: BodypartCard(
                 imagePath: 'assets/svgs/back.svg',
                 bodyPart: 'Back',
+                sendData: _sendOnMessageToBluetooth,
               )),
               Expanded(
                   child: BodypartCard(
                 imagePath: 'assets/svgs/knees.svg',
                 bodyPart: 'Knee',
+                sendData: _sendOnMessageToBluetooth,
               )),
             ],
           ),
@@ -148,11 +364,25 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: BodypartCard(
                 imagePath: 'assets/svgs/shoulder.svg',
                 bodyPart: 'Shoulder',
+                sendData: _sendOnMessageToBluetooth,
               )),
             ],
           ),
         ],
       ),
     );
+  }
+
+  bool isDisconnecting = false;
+
+  @override
+  void dispose() {
+    if (isConnected && connection != null) {
+      isDisconnecting = true;
+      connection!.dispose();
+      connection = null;
+    }
+
+    super.dispose();
   }
 }

@@ -3,7 +3,12 @@ import 'package:flutter/material.dart';
 class SliderWidget extends StatefulWidget {
   final double bmiValue;
   final int age;
-  const SliderWidget({Key? key, required this.bmiValue, required this.age})
+  final Function sendData;
+  const SliderWidget(
+      {Key? key,
+      required this.bmiValue,
+      required this.age,
+      required this.sendData})
       : super(key: key);
 
   @override
@@ -92,6 +97,9 @@ class _SliderWidgetState extends State<SliderWidget> {
             max: 80,
             divisions: 8,
             label: "$_value",
+            onChangeEnd: (value) {
+              widget.sendData(value.toString());
+            },
             onChanged: (double value) {
               setState(() {
                 _value = value.round();
