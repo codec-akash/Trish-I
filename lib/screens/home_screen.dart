@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -38,8 +37,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   bool _isButtonUnavailable = false;
 
-  int _deviceState = 0;
-  late BluetoothDevice _device;
+  // int _deviceState = 0;
+  late BluetoothDevice? _device;
 
   @override
   void didChangeDependencies() {
@@ -80,6 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (_bluetoothState == BluetoothState.STATE_OFF) {
       await FlutterBluetoothSerial.instance.requestEnable();
       await getPairedDevices();
+      print("Connected to Bluetooth");
       return true;
     } else {
       await getPairedDevices();
@@ -88,11 +88,12 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _connect() async {
+    // ignore: unnecessary_null_comparison
     if (_device == null) {
       print('No device selected');
     } else {
       if (!isConnected) {
-        await BluetoothConnection.toAddress(_device.address)
+        await BluetoothConnection.toAddress(_device!.address)
             .then((_connection) {
           print('Connected to the device');
           connection = _connection;
@@ -128,7 +129,9 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  List<BluetoothDevice> _devicesList = [];
+  // _device@31431314
+
+  List<BluetoothDevice>? _devicesList = [];
 
   Future<void> getPairedDevices() async {
     List<BluetoothDevice> devices = [];
@@ -147,12 +150,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   List<DropdownMenuItem<BluetoothDevice>> _getDeviceItems() {
     List<DropdownMenuItem<BluetoothDevice>> items = [];
-    if (_devicesList.isEmpty) {
+    if (_devicesList!.isEmpty) {
       items.add(DropdownMenuItem(
         child: Text('NONE'),
       ));
     } else {
-      _devicesList.forEach((device) {
+      _devicesList!.forEach((device) {
         items.add(DropdownMenuItem(
           child: Text(device.name ?? ""),
           value: device,
@@ -174,6 +177,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: Text("Trish - I"),
         actions: <Widget>[
+          // ignore: deprecated_member_use
           FlatButton.icon(
             icon: Icon(
               Icons.refresh,
@@ -321,10 +325,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         DropdownButton(
                           items: _getDeviceItems(),
-                          value: _devicesList.isNotEmpty ? _device : null,
+                          value: _devicesList!.isNotEmpty
+                              ? _device
+                              : null, // isEmpty se chal rha hai
                           onChanged: (value) => setState(
                               () => _device = value as BluetoothDevice),
                         ),
+                        // ignore: deprecated_member_use
                         RaisedButton(
                           onPressed: _isButtonUnavailable
                               ? null

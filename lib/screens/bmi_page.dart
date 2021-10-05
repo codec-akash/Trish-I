@@ -6,7 +6,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trishi/global/global.dart';
 import 'package:trishi/model/body_model.dart';
 import 'package:trishi/repository/bmi_repo.dart';
-import 'package:trishi/widgets/slider_widget.dart';
 
 import 'home_screen.dart';
 
